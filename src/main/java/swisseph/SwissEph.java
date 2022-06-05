@@ -107,7 +107,7 @@ import static swisseph.SweConst.SE_GREG_CAL;
 public class SwissEph implements ISwissEph {
 
   final SwissData swed;
-  final SwephMosh smosh;
+  SwephMosh smosh;
   final SwephJPL sj;
   final SwissLib sl;
   final Swemmoon sm;
