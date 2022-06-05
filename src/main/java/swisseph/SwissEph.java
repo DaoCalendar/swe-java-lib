@@ -1,8 +1,3 @@
-
-
-
-
-
 /*
    This is a port of the Swiss Ephemeris Free Edition, Version 2.00.00
    of Astrodienst AG, Switzerland from the original C Code to Java. For
@@ -179,6 +174,14 @@ public class SwissEph implements ISwissEph {
       swe_set_ephe_path(path);
 //    }
   }
+
+  // jimmy: allocate SwephMosh now if needed
+  public void initSwephMosh()
+  {
+    if (smosh == null)
+      smosh = new SwephMosh(sl, this, swed);
+  }
+
 //////////////////////////////////////////////////////////////////////////////
 // End of Constructors ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
