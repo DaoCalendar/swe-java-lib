@@ -775,7 +775,14 @@ public class SweDate implements Serializable {
     IDate dt=swe_revjul(jd,SE_GREG_CAL);
     return (dt.year==year && dt.month==month && dt.day==day);
   }
-
+  // Jimmy: add calendar type support
+  public boolean checkDate(int year, int month, int day, double hour,
+                           boolean cal_type)
+  {
+    double jd = swe_julday(year, month, day, hour, cal_type);
+    IDate dt = swe_revjul(jd, cal_type);
+    return (dt.year == year && dt.month == month && dt.day == day);
+  }
   /**
   * Makes the date to be a valid date.
   */
@@ -912,7 +919,7 @@ public class SweDate implements Serializable {
   * Sets the tidal acceleration used in calculations of delta T.
   * Corresponds to <code>void swi_set_tid_acc(double, int, int)</code> method in the original
   * C version.
-  * @param t_acc tidal acceleration
+//  * @param t_acc tidal acceleration
   * @param iflag
   * @param denum
   * @see #setGlobalTidalAcc(double)
@@ -1772,7 +1779,7 @@ public class SweDate implements Serializable {
   * getUTCFromLocalTime() method for this.
   * @return The converted date fields
   * @see #getUTCFromLocalTime(int, int, int, int, int, double, double)
-  * @see swe_utc_time_zone
+//  * @see swe_utc_time_zone
   */
   public static SDate getLocalTimeFromUTC(int iyear, int imonth, int iday,
   int ihour, int imin, double dsec, double d_timezone) {

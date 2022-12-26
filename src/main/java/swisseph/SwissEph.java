@@ -115,7 +115,8 @@ public class SwissEph implements ISwissEph {
   SweHouse sh=null;
   SweHel shl=null;
   Swecl sc=null;
-  
+
+  Extensions ext = null;
     @Override
     public boolean isNativeAPI() {
         return false;
@@ -2962,7 +2963,142 @@ String slast_starname;
   */
   public void setTransitSpeedsfile(String fname, boolean writeable) {
   }
-  
+
+  /**
+   * Searches for the next or previous transit of a planet over a specified
+   * longitude, latitude, distance or speed value with geocentric or topocentric
+   * positions in a tropical or sidereal zodiac. Dates are interpreted as ET
+   * (=UT&nbsp;+&nbsp;deltaT).<p>
+   * See swisseph.TCPlanet or swisseph.TCPlanetPlanet below for examples on
+   * how to use this method.<p>
+   *
+   * @param tc        The TransitCalculator that should be used here.
+   * @param jdET      The date (and time) in ET, from where to start searching.
+   * @param backwards If backward search should be performed.
+   * @return return A double containing the julian day number for the next /
+   * previous transit as ET.
+   * @see swisseph.TCPlanet
+   * @see swisseph.TCPlanetPlanet
+   */
+  public double getTransitET(TransitCalculator tc, double jdET, boolean backwards)
+          throws IllegalArgumentException, SwissephException {
+    return getTransitET(tc,
+            jdET,
+            backwards,
+            (backwards ? -Double.MAX_VALUE : Double.MAX_VALUE));
+  }
+
+  /**
+   * Searches for the next or previous transit of a planet over a specified
+   * longitude, latitude, distance or speed value with geocentric or topocentric
+   * positions in a tropical or sidereal zodiac. Dates are interpreted as ET
+   * (=UT&nbsp;+&nbsp;deltaT).<p>
+   * See swisseph.TCPlanet or swisseph.TCPlanetPlanet below for examples on
+   * how to use this method.<p>
+   *
+   * @param tc        The TransitCalculator that should be used here.
+   * @param jdET      The date (and time) in ET, from where to start searching.
+   * @param backwards If backward search should be performed.
+   * @param jdLimit   This is the date, when the search for transits should be
+   *                  stopped, even if no transit point had been found up to then.
+   * @return return A double containing the julian day number for the next /
+   * previous transit as ET.
+   * @see swisseph.TCPlanet
+   * @see swisseph.TCPlanetPlanet
+   */
+  public double getTransitET(TransitCalculator tc, double jdET, boolean backwards, double jdLimit)
+          throws IllegalArgumentException, SwissephException {
+    if (ext == null) {
+      ext = new Extensions();
+    }
+    boolean calcUT = (tc instanceof TCHouses);
+    return ext.getTransit(tc, jdET - (calcUT ? SweDate.getDeltaT(jdET) : 0), backwards, jdLimit) +
+            (calcUT ? SweDate.getDeltaT(jdET) : 0);
+  }
+
+  /**
+   * Searches for the next or previous transit of a planet over a specified
+   * longitude, latitude, distance or speed value with geocentric or topocentric
+   * positions in a tropical or sidereal zodiac. Dates are interpreted as UT
+   * (=ET&nbsp;-&nbsp;deltaT).<p>
+   * See swisseph.TCPlanet or swisseph.TCPlanetPlanet below for examples on
+   * how to use this method.<p>
+   *
+   * @param tc        The TransitCalculator that should be used here.
+   * @param jdUT      The date (and time) in UT, from where to start searching.
+   * @param backwards If backward search should be performed.
+   * @return return A double containing the julian day number for the next /
+   * previous transit as UT.
+   * @see swisseph.TCPlanet
+   * @see swisseph.TCPlanetPlanet
+   */
+  public double getTransitUT(
+          TransitCalculator tc,
+          double jdUT,
+          boolean backwards)
+          throws IllegalArgumentException, SwissephException {
+    if (ext == null) {
+      ext = new Extensions();
+    }
+    boolean calcUT = (tc instanceof TCHouses);
+    double jdET = ext.getTransit(
+            tc,
+            jdUT + (calcUT ? 0 : SweDate.getDeltaT(jdUT)),
+            backwards,
+            (backwards ? -Double.MAX_VALUE : Double.MAX_VALUE));
+    return jdET - (calcUT ? 0 : SweDate.getDeltaT(jdET));
+  }
+
+  /**
+   * Searches for the next or previous transit of a planet over a specified
+   * longitude, latitude, distance or speed value with geocentric or topocentric
+   * positions in a tropical or sidereal zodiac. Dates are interpreted as UT
+   * (=ET&nbsp;-&nbsp;deltaT).<p>
+   * See swisseph.TCPlanet or swisseph.TCPlanetPlanet below for examples on
+   * how to use this method.<p>
+   *
+   * @param tc        The TransitCalculator that should be used here.
+   * @param jdUT      The date (and time) in UT, from where to start searching.
+   * @param backwards If backward search should be performed.
+   * @param jdLimit   This is the date, when the search for transits should be
+   *                  stopped, even if no transit point had been found up to then. It is
+   *                  interpreted as UT time as well.
+   * @return return A double containing the julian day number for the next /
+   * previous transit as UT.
+   * @see swisseph.TCPlanet
+   * @see swisseph.TCPlanetPlanet
+   */
+  public double getTransitUT(
+          TransitCalculator tc,
+          double jdUT,
+          boolean backwards,
+          double jdLimit)
+          throws IllegalArgumentException, SwissephException {
+    if (ext == null) {
+      ext = new Extensions();
+    }
+    double jdET = ext.getTransit(
+            tc,
+            jdUT + SweDate.getDeltaT(jdUT),
+            backwards,
+            jdLimit + SweDate.getDeltaT(jdLimit));
+    return jdET - SweDate.getDeltaT(jdET);
+  }
+//  public double getNextTransitUT(int planet, double transitVal, int flags,
+//                                 double tjdUT, boolean backward) throws IllegalArgumentException,
+//          SwissephException
+//  {
+//    if (ext == null) {
+//      ext = new Extensions();
+//    }
+//    double jdET = ext.getTransit(planet, transitVal,  backward, tjdUT
+//            + SweDate.getDeltaT(tjdUT));
+//    double jdET = ext.getNextTransit(planet, transitVal, flags, backward, tjdUT
+//            + SweDate.getDeltaT(tjdUT));
+//
+//
+//    return jdET - SweDate.getDeltaT(jdET);
+//  }
 //////////////////////////////////////////////////////////////////////////////
 // End of public methods /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -7381,24 +7517,24 @@ int refepyOffs;
     int idx=cpos[2].length();
     while(true) {
       try {
-        epoch = Double.valueOf(cpos[2].substring(0,idx)).doubleValue();
+        epoch = Double.parseDouble(cpos[2].substring(0,idx));
         break;
       } catch (NumberFormatException nf) {
         idx--;
         if (idx==0) { epoch=0.; break; }
       }
     }
-    ra_h = new Double(cpos[3]).doubleValue();
-    ra_m = new Double(cpos[4]).doubleValue();
-    ra_s = new Double(cpos[5]).doubleValue();
-    de_d = new Double(cpos[6]).doubleValue();
+    ra_h = Double.parseDouble(cpos[3]);
+    ra_m = Double.parseDouble(cpos[4]);
+    ra_s = Double.parseDouble(cpos[5]);
+    de_d = Double.parseDouble(cpos[6]);
     sde_d = cpos[6];
-    de_m = new Double(cpos[7]).doubleValue();
-    de_s = new Double(cpos[8]).doubleValue();
-    ra_pm = new Double(cpos[9]).doubleValue();
-    de_pm = new Double(cpos[10]).doubleValue();
-    radv = new Double(cpos[11]).doubleValue();
-    parall = new Double(cpos[12]).doubleValue();
+    de_m = Double.parseDouble(cpos[7]);
+    de_s = Double.parseDouble(cpos[8]);
+    ra_pm = Double.parseDouble(cpos[9]);
+    de_pm = Double.parseDouble(cpos[10]);
+    radv = Double.parseDouble(cpos[11]);
+    parall = Double.parseDouble(cpos[12]);
     /* return trad. name, nomeclature name */
     if (cpos[0].length() > SweConst.SE_MAX_STNAME) {
       cpos[0]=cpos[0].substring(0,SweConst.SE_MAX_STNAME);
@@ -7410,7 +7546,7 @@ int refepyOffs;
     star.setLength(0);
     star.append(cpos[0]);
     if (cpos[0].length() + cpos[1].length() + 1 < SweConst.SE_MAX_STNAME - 1)
-      star.append(","+cpos[1]);
+      star.append(",").append(cpos[1]);
     /****************************************
      * position and speed (equinox)
      ****************************************/

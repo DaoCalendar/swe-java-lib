@@ -90,7 +90,7 @@ public class DblObj implements java.io.Serializable {
     public double val;
     
     public DblObj() {
-        this.val = 0.;
+        this.val = 0.0;
     }
 
     public DblObj(final double val) {
