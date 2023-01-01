@@ -3077,7 +3077,7 @@ String slast_starname;
     if (ext == null) {
       ext = new Extensions();
     }
-    double jdET = ext.getTransit(
+    double jdET = Extensions.getTransit(
             tc,
             jdUT + SweDate.getDeltaT(jdUT),
             backwards,
@@ -3091,6 +3091,7 @@ String slast_starname;
 //    if (ext == null) {
 //      ext = new Extensions();
 //    }
+//    TransitCalculator tc = new TCPlanet(planet);
 //    double jdET = ext.getTransit(planet, transitVal,  backward, tjdUT
 //            + SweDate.getDeltaT(tjdUT));
 //    double jdET = ext.getNextTransit(planet, transitVal, flags, backward, tjdUT
@@ -7094,6 +7095,7 @@ int refepyOffs;
    * xx           array equatorial cartesian position and speed
    * serr         error string
    */
+  @SuppressWarnings("SuspiciousIndentation")
   int swi_plan_for_osc_elem(int iflag, double tjd, double xx[]) {
     int i;
     double x[]=new double[6];
