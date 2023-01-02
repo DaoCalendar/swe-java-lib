@@ -8195,7 +8195,7 @@ if (false) {
   * @see SweDate#setGlobalTidalAcc(double)
   */
   @Override
-  public int swe_time_equ(double tjd_ut, double E[], StringBuilder serr) {
+  public int swe_time_equ(double tjd_ut, double[] E, StringBuilder serr) {
     int retval;
     double t, dt, x[] = new double[6];
     double sidt = sl.swe_sidtime(tjd_ut);
@@ -8212,7 +8212,7 @@ if (false) {
     if (dt > 180)
       dt -= 360;
     dt *= 4;
-    E[0] = dt / 1440.0;
+    E[0] = dt / 1440.0; // TODO
     return SweConst.OK;
   }
 

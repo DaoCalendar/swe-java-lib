@@ -218,7 +218,7 @@ public interface SweConst {
     static final int SE_NPLANETS = 23;
 
     int SE_PLMOON_OFFSET = 9000;
-
+    static final int NOT_AVAILABLE = -2;
     /**
      * The offset, where asteroid numbers start. It is equal to 10000.
      */
@@ -508,7 +508,6 @@ public interface SweConst {
      * calculate transits over a longitude. This is a constant to be used as a
      * flag to the TransitCalculator constructors.
      *
-     * @see swisseph.TCPlanet#TCPlanet(SwissEph, int, int, double)
      * @see swisseph.TCPlanetPlanet#TCPlanetPlanet(SwissEph, int, int, int, double)
      */
     int SEFLG_TRANSIT_LONGITUDE = 128 * 1024;
@@ -516,8 +515,6 @@ public interface SweConst {
      * calculate transits over a latitude. This is a constant to be used as a
      * flag to the TransitCalculator constructors.
      *
-     * @see swisseph.TCPlanet#TCPlanet(SwissEph, int, int, double)
-     * @see swisseph.TCPlanetPlanet#TCPlanetPlanet(SwissEph, int, int, int, double)
      */
     int SEFLG_TRANSIT_LATITUDE = 256 * 1024;
     /**
