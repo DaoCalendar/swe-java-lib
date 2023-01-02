@@ -53,7 +53,16 @@ public class SweObjectsTest extends ASwissephTest {
         if (SweAyanamsa.AY_USER.equals(ayanamsa)) return;
         assertEquals(newSweObjects(2000 + ayanamsa.fid(), ayanamsa, WHOLE_SIGN, false));
     }
-
+/**
+ * getSwephExp 和 getSwissEph 不能有所不同
+ * @author xiaxiaozheng
+ * @date 04:30 1/3/2023
+ * @param year
+ * @param ayanamsa
+ * @param houseSystem
+ * @param trueNode
+ * @return org.swisseph.api.ISweObjects[]
+ **/
     ISweObjects[] newSweObjects(int year, ISweAyanamsa ayanamsa, ISweHouseSystem houseSystem, boolean trueNode) {
         final Calendar calendar = Calendar.getInstance();
 
@@ -70,10 +79,10 @@ public class SweObjectsTest extends ASwissephTest {
         final ISweJulianDate julianDate2 = new SweJulianDate(calendar);
         final ISweObjectsOptions objectsOptions = new SweObjectsOptions.Builder()
             .ayanamsa(ayanamsa).houseSystem(houseSystem).trueNode(trueNode).build();
-
+//导入原始dll
         final ISweObjects objects1 = new SweObjects(getSwephExp(),
                 julianDate1, GEO_CHENNAI, objectsOptions).completeBuild();
-
+//本地代码
         final ISweObjects objects2 = new SweObjects(getSwissEph(),
                 julianDate2, GEO_CHENNAI, objectsOptions).completeBuild();
 

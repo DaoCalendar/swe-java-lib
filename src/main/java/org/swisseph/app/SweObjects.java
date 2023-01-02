@@ -266,7 +266,12 @@ public class SweObjects implements ISweObjects {
         for (int objId = MA; objId < RA; objId++) buildObject(objId, tjd, dres, serr);
         return buildLunarNodes();
     }
-
+/**
+ * getSwephExp objID从1到12
+ * @author xiaxiaozheng
+ * @date 05:09 1/3/2023
+ * @return org.swisseph.api.ISweObjects
+ **/
     @Override
     public ISweObjects buildUranusPluto() {
         final double[] dres = new double[6];

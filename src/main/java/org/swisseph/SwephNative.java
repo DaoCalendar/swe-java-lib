@@ -12,6 +12,7 @@ import swisseph.SwephExp;
 /**
  * @author Yura Krymlov
  * @version 1.1, 2022-05
+ * 原始dll导入
  */
 public class SwephNative implements ISwissEph {
 
