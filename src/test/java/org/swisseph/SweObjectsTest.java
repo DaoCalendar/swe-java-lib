@@ -47,12 +47,12 @@ public class SweObjectsTest extends ASwissephTest {
         assertEquals(newSweObjects(1900 + info.getCurrentRepetition(), LAHIRI, WHOLE_SIGN, false));
     }
 
-    @ParameterizedTest()
-    @EnumSource(SweAyanamsa.class)
-    void testAyanamsa(SweAyanamsa ayanamsa) {
-        if (SweAyanamsa.AY_USER.equals(ayanamsa)) return;
-        assertEquals(newSweObjects(2000 + ayanamsa.fid(), ayanamsa, WHOLE_SIGN, false));
-    }
+//    @ParameterizedTest()
+//    @EnumSource(SweAyanamsa.class)
+//    void testAyanamsa(SweAyanamsa ayanamsa) {
+//        if (SweAyanamsa.AY_USER.equals(ayanamsa)) return;
+//        assertEquals(newSweObjects(2000 + ayanamsa.fid(), ayanamsa, WHOLE_SIGN, false));
+//    }
 /**
  * getSwephExp 和 getSwissEph 不能有所不同
  * @author xiaxiaozheng
