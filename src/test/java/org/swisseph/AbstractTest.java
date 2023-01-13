@@ -21,15 +21,21 @@ import static org.swisseph.api.ISweConstants.EPHE_PATH;
  * @author Yura Krymlov
  * @version 1.0, 2021-02
  */
-@Execution(ExecutionMode.CONCURRENT)
+@Execution(ExecutionMode.SAME_THREAD)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.MethodName.class)
-public abstract class ASwissephTest {
+public abstract class AbstractTest {
     protected static final ThreadLocal<ISwissEph> SWISS_EPHS = new ThreadLocal<>();
     protected static final ThreadLocal<ISwissEph> SWEPH_EXPS = new ThreadLocal<>();
 
     protected static final ISweGeoLocation GEO_CHENNAI = new SweGeoLocation(
             80 + (16 / 60.), 13 + (5 / 60.), 6.7);
+
+    protected static final ISweGeoLocation GEO_LUCKNOW = new SweGeoLocation(
+            81.83, 25.95, 123);
+
+    protected static final ISweGeoLocation GEO_GREENWICH = new SweGeoLocation(
+            0., 51.50, 40);
 
 
     protected static ISwissEph newSwissEph() {
