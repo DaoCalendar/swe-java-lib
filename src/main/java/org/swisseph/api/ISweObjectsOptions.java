@@ -19,25 +19,46 @@ import static swisseph.SweConst.*;
 public interface ISweObjectsOptions extends Serializable, Cloneable {
     int DEFAULT_SS_RISE_SET_FLAGS = SE_BIT_HINDU_RISING;
 
-    /**
-     * Special preset of flags for planets calculation
-     */
-    int DEFAULT_SS_TRUEPOS_NONUT_SPEED_FLAGS =
-            SEFLG_SIDEREAL  |   // sidereal zodiac
-            SEFLG_SWIEPH    |   // fastest method, requires data files
-            SEFLG_TRUEPOS   |   // true position of the planet versus the apparent position
-            SEFLG_NONUT     |   // calculate the position of the planet without considering the nutation
-            SEFLG_SPEED;        // to determine retrograde vs direct motion
+    int DEFAULT_SS_MAIN_FLAGS =
+            SEFLG_SIDEREAL |        // sidereal zodiac
+                    SEFLG_SWIEPH;   // fastest method, requires data files
+
+    int DEFAULT_SS_HOUSE_FLAGS =
+            DEFAULT_SS_MAIN_FLAGS;
+
+    int DEFAULT_SS_CALC_FLAGS =
+            DEFAULT_SS_MAIN_FLAGS |
+                    SEFLG_TRUEPOS |   // true position of the planet versus the apparent position
+                    SEFLG_SPEED;      // to determine retrograde vs direct motion
+
+    int DEFAULT_SS_TRANSIT_FLAGS =
+            DEFAULT_SS_MAIN_FLAGS |
+                    SEFLG_TRANSIT_LONGITUDE |   // calculate transits over a longitude in TransitCalculator
+                    SEFLG_TRUEPOS;              // true position of the planet versus the apparent position
+
 
     ISweHouseSystem houseSystem();
+
     ISweAyanamsa ayanamsa();
 
     default boolean trueNode() {
         return false;
     }
 
+    default int mainFlags() {
+        return DEFAULT_SS_MAIN_FLAGS;
+    }
+
+    default int houseFlags() {
+        return DEFAULT_SS_HOUSE_FLAGS;
+    }
+
     default int calcFlags() {
-        return DEFAULT_SS_TRUEPOS_NONUT_SPEED_FLAGS;
+        return DEFAULT_SS_CALC_FLAGS;
+    }
+
+    default int transitFlags() {
+        return DEFAULT_SS_TRANSIT_FLAGS;
     }
 
     /**

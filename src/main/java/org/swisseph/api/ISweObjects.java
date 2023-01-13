@@ -10,6 +10,8 @@ import org.swisseph.ISwissEph;
 
 import java.io.Serializable;
 
+import static org.swisseph.api.ISweConstants.i1;
+import static org.swisseph.api.ISweConstants.i12;
 import static swisseph.SweConst.*;
 
 /**
@@ -84,6 +86,11 @@ public interface ISweObjects extends ISweContext, Serializable {
     ISweObjects buildMarsKetu();
 
     /**
+     * Builds the {@link ISweObjects} instance with only calculated Jupiter and up to Saturn data.
+     */
+    ISweObjects buildJupiterSaturn();
+
+    /**
      * Builds the {@link ISweObjects} instance with only calculated Uranus and up to Pluto data.
      */
     ISweObjects buildUranusPluto();
@@ -151,5 +158,33 @@ public interface ISweObjects extends ISweContext, Serializable {
 
     default int objectsCount() {
         return OBJECTS_COUNT;
+    }
+
+    static int calculatePlanetHouse(final int ascendantSign, final int planetSign) {
+        int planetHouse = planetSign;
+        planetHouse += i12;
+        planetHouse -= ascendantSign;
+        planetHouse %= i12;
+        planetHouse += i1;
+        return planetHouse;
+    }
+
+    /**
+     * Sets geographic position and altitude of observer and ayanamsha mode for sidereal planet calculations
+     */
+    static ISwissEph initSwissEph(ISwissEph swissEph, ISweGeoLocation sweLocation, ISweObjectsOptions sweOptions) {
+        if (null == swissEph) return null;
+
+        if (null != sweLocation) {
+            swissEph.swe_set_topo(sweLocation.longitude(),
+                    sweLocation.latitude(), sweLocation.altitude());
+        }
+
+        if (null != sweOptions) {
+            swissEph.swe_set_sid_mode(sweOptions.ayanamsa().fid(),
+                    sweOptions.initialJulianDay(), sweOptions.initialAyanamsa());
+        }
+
+        return swissEph;
     }
 }
